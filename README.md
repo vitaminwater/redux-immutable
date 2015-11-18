@@ -3,6 +3,8 @@
 [![Travis build status](http://img.shields.io/travis/gajus/redux-immutable/master.svg?style=flat-square)](https://travis-ci.org/gajus/redux-immutable)
 [![NPM version](http://img.shields.io/npm/v/redux-immutable.svg?style=flat-square)](https://www.npmjs.org/package/redux-immutable)
 
+>>> As of Redux@3+, you don't need to use redux-immutable to use Immutable.js. See http://stackoverflow.com/a/31899857/368691.
+
 This package provides a single function `combineReducers`, which implements:
 
 * Immutable state.
