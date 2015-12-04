@@ -32,7 +32,7 @@ isActionMap = (map) => {
  */
 iterator = (domain, action, collection, tapper) => {
     let newDomain;
-    let type = action.type == '@@redux/INIT' ? 'CONSTRUCT' : action.type;
+    let type = action.type == '@@INIT' ? 'CONSTRUCT' : action.type;
 
     if (!Immutable.Iterable.isIterable(domain)) {
         throw new Error(`Domain must be an instance of Immutable.Iterable.`);
@@ -95,7 +95,7 @@ export default (reducer) => {
 
         newState = iterator(state, action, reducer, tapper);
 
-        if (!tapper.isActionHandled && action.type !== '@@redux/INIT') {
+        if (!tapper.isActionHandled && action.type !== '@@INIT') {
             console.warn(`Unhandled action "${action.type}".`, action);
         }
 
