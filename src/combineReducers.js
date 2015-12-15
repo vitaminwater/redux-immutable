@@ -6,6 +6,10 @@ let isActionMap,
     isDomainMap,
     iterator;
 
+isINIT = (type) => {
+  return type.startsWith('@@') && type.endsWith('INIT');
+}
+
 /**
  * @param {Object.<string, Object>} map
  * @return {Boolean} If every object property value is a plain object.
@@ -32,7 +36,7 @@ isActionMap = (map) => {
  */
 iterator = (domain, action, collection, tapper) => {
     let newDomain;
-    let type = action.type == '@@INIT' ? 'CONSTRUCT' : action.type;
+    let type = isINIT(action.type) ? 'CONSTRUCT' : action.type;
 
     if (!Immutable.Iterable.isIterable(domain)) {
         throw new Error(`Domain must be an instance of Immutable.Iterable.`);
@@ -95,7 +99,7 @@ export default (reducer) => {
 
         newState = iterator(state, action, reducer, tapper);
 
-        if (!tapper.isActionHandled && action.type !== '@@INIT') {
+        if (!tapper.isActionHandled && isINIT(action.type)) {
             console.warn(`Unhandled action "${action.type}".`, action);
         }
 
