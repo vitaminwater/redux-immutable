@@ -12,7 +12,7 @@ isINIT = (type) => {
 
 /**
  * @param {Object.<string, Object>} map
- * @return {Boolean} If every object property value is a plain object.
+ * @return {boolean} If every object property value is a plain object.
  */
 isDomainMap = (map) => {
     return _.every(map, _.isPlainObject);
@@ -20,7 +20,7 @@ isDomainMap = (map) => {
 
 /**
  * @param {Object.<string, Function>} map
- * @return {Boolean} If every object property value is a function.
+ * @return {boolean} If every object property value is a function.
  */
 isActionMap = (map) => {
     return _.every(map, _.isFunction);
@@ -39,18 +39,18 @@ iterator = (domain, action, collection, tapper) => {
     let type = isINIT(action.type) ? 'CONSTRUCT' : action.type;
 
     if (!Immutable.Iterable.isIterable(domain)) {
-        throw new Error(`Domain must be an instance of Immutable.Iterable.`);
+        throw new Error('Domain must be an instance of Immutable.Iterable.');
     }
 
     newDomain = domain;
 
-    // console.log(`domain`, domain, `action`, action, `definition`, collection);
+    // console.log('domain', domain, 'action', action, 'definition', collection);
 
     _.forEach(collection, (value, domainName) => {
-        // console.log(`value`, value, `domain`, domainName, `isActionMap`, isActionMap(value), `isDomainMap`, isDomainMap(value));
+        // console.log('value', value, 'domain', domainName, 'isActionMap', isActionMap(value), 'isDomainMap', isDomainMap(value));
 
         if (isActionMap(value)) {
-            // console.log(`action.type`, action.type, `value[action.type]`, typeof value[action.type]);
+            // console.log('action.name', action.name, 'value[action.name]', typeof value[action.name]);
 
             if (value[type]) {
                 let result;
@@ -88,7 +88,7 @@ export default (reducer) => {
             tapper;
 
         if (!action) {
-            throw new Error(`Action parameter value must be an object.`);
+            throw new Error('Action parameter value must be an object.');
         }
 
         // Tapper is an object that tracks execution of the action.

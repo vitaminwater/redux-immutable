@@ -1,10 +1,8 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _utils = require('./utils');
 
@@ -14,24 +12,32 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
 var isActionMap = undefined,
     isDomainMap = undefined,
     iterator = undefined;
 
+isINIT = function (type) {
+    return type.startsWith('@@') && type.endsWith('INIT');
+};
+
 /**
  * @param {Object.<string, Object>} map
- * @return {Boolean} If every object property value is a plain object.
+ * @return {boolean} If every object property value is a plain object.
  */
 isDomainMap = function (map) {
-    return _utils2['default'].every(map, _utils2['default'].isPlainObject);
+    return _utils2.default.every(map, _utils2.default.isPlainObject);
 };
 
 /**
  * @param {Object.<string, Function>} map
- * @return {Boolean} If every object property value is a function.
+ * @return {boolean} If every object property value is a function.
  */
 isActionMap = function (map) {
-    return _utils2['default'].every(map, _utils2['default'].isFunction);
+    return _utils2.default.every(map, _utils2.default.isFunction);
 };
 
 /**
@@ -44,21 +50,21 @@ isActionMap = function (map) {
  */
 iterator = function (domain, action, collection, tapper) {
     var newDomain = undefined;
-    var type = action.type == '@@INIT' ? 'CONSTRUCT' : action.type;
+    var type = isINIT(action.type) ? 'CONSTRUCT' : action.type;
 
-    if (!_immutable2['default'].Iterable.isIterable(domain)) {
+    if (!_immutable2.default.Iterable.isIterable(domain)) {
         throw new Error('Domain must be an instance of Immutable.Iterable.');
     }
 
     newDomain = domain;
 
-    // console.log(`domain`, domain, `action`, action, `definition`, collection);
+    // console.log('domain', domain, 'action', action, 'definition', collection);
 
-    _utils2['default'].forEach(collection, function (value, domainName) {
-        // console.log(`value`, value, `domain`, domainName, `isActionMap`, isActionMap(value), `isDomainMap`, isDomainMap(value));
+    _utils2.default.forEach(collection, function (value, domainName) {
+        // console.log('value', value, 'domain', domainName, 'isActionMap', isActionMap(value), 'isDomainMap', isDomainMap(value));
 
         if (isActionMap(value)) {
-            // console.log(`action.type`, action.type, `value[action.type]`, typeof value[action.type]);
+            // console.log('action.name', action.name, 'value[action.name]', typeof value[action.name]);
 
             if (value[type]) {
                 var result = undefined;
@@ -67,14 +73,14 @@ iterator = function (domain, action, collection, tapper) {
 
                 result = value[type](newDomain.get(domainName), action);
 
-                if (!_immutable2['default'].Iterable.isIterable(result)) {
-                    throw new Error('Reducer must return an instance of Immutable.Iterable. "' + domainName + '" domain "' + action.type + '" action handler result is "' + typeof result + '".');
+                if (!_immutable2.default.Iterable.isIterable(result)) {
+                    throw new Error('Reducer must return an instance of Immutable.Iterable. "' + domainName + '" domain "' + action.type + '" action handler result is "' + (typeof result === 'undefined' ? 'undefined' : _typeof(result)) + '".');
                 }
 
                 newDomain = newDomain.set(domainName, result);
             }
         } else if (isDomainMap(value)) {
-            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName) || _immutable2['default'].Map(), action, value, tapper));
+            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName) || _immutable2.default.Map(), action, value, tapper));
         }
     });
 
@@ -86,7 +92,7 @@ iterator = function (domain, action, collection, tapper) {
  * @return {Function}
  */
 
-exports['default'] = function (reducer) {
+exports.default = function (reducer) {
     /**
      * @param {Immutable.Iterable} state
      * @param {Object} action
@@ -108,13 +114,11 @@ exports['default'] = function (reducer) {
 
         newState = iterator(state, action, reducer, tapper);
 
-        if (!tapper.isActionHandled && action.type !== '@@INIT') {
+        if (!tapper.isActionHandled && isINIT(action.type)) {
             console.warn('Unhandled action "' + action.type + '".', action);
         }
 
         return newState;
     };
 };
-
-module.exports = exports['default'];
 //# sourceMappingURL=combineReducers.js.map
