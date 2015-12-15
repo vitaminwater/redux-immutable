@@ -2,7 +2,8 @@ import _ from './utils';
 
 import Immutable from 'immutable';
 
-let isActionMap,
+let isINIT,
+    isActionMap,
     isDomainMap,
     iterator;
 

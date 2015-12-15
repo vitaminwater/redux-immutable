@@ -16,7 +16,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
-var isActionMap = undefined,
+var isINIT = undefined,
+    isActionMap = undefined,
     isDomainMap = undefined,
     iterator = undefined;
 
